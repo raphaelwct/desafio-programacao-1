@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from selenium import webdriver
+import os
+
+os.environ["DJANGO_SETTINGS_MODULE"] = "myfinance.settings"
 
 
 def before_feature(context, feature):
