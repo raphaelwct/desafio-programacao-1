@@ -1,3 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render_to_response
 
-# Create your views here.
+def purchase_importer_form(request):
+    return render_to_response('purchase_importer_form.html')
