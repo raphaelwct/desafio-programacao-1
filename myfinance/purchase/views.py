@@ -1,13 +1,17 @@
 # -*- coding: utf-8 -*-
 
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 
 
 def purchase_importer_form(request):
-    import_message = None
+    import_message = ''
     if request.method == 'POST':
         import_message = import_data(request)
-    return render_to_response('purchase_importer_form.html', {'message': import_message})
+    return render(
+        request,
+        'purchase_importer_form.html',
+        {'message': import_message}
+    )
 
 
 def import_data(request):
