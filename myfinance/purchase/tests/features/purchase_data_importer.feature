@@ -12,4 +12,4 @@ Funcionalidade: Importar dados de vendas
 
         Dado que eu faco o upload de um arquivo
         Quando eu pressiono o botao importar
-        Então eu devo ver "Importacao realizada com sucesso"
+        Então eu devo ver "Importacao efetuada com sucesso"
