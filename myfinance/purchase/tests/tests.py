@@ -13,14 +13,14 @@ class ViewsTestCase(TestCase):
 
     @mock.patch.object(views, 'import_data')
     def test_if_purchase_importer_form_calls_import_data_in_case_of_post_request(self, import_data_mock):
-        client = Client()
-        response = client.post('/purchase/pdi/')
-        self.assertEquals(response.status_code, 200)
+        request_mock = mock.Mock()
+        request_mock.method = 'POST'
+        views.purchase_importer_form(request_mock)
         self.assertTrue(import_data_mock.called)
 
     @mock.patch.object(views, 'import_data')
     def test_purchase_importer_form_should_not_calls_import_data_in_case_of_get_request(self, import_data_mock):
-        client = Client()
-        response = client.get('/purchase/pdi/')
-        self.assertEquals(response.status_code, 200)
+        request_mock = mock.Mock()
+        request_mock.method = 'GET'
+        views.purchase_importer_form(request_mock)
         self.assertFalse(import_data_mock.called)
