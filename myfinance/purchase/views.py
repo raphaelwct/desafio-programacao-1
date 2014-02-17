@@ -30,8 +30,9 @@ def save_purchase_data(file_line):
     normalize_data(file_line)
 
 def normalize_data(file_line):
-    normalized_data = {'purchaser': None, 'item': None, 'merchant': None}
-    normalized_data['purchaser'] = models.Purchaser()
-    normalized_data['item'] = models.Item()
-    normalized_data['merchant'] = models.Merchant()
+    normalized_data = {
+        'purchaser': models.Purchaser(name=file_line[0], count=int(file_line[3])),
+        'item': models.Item(description=file_line[1], price=float(file_line[2])),
+        'merchant': models.Merchant(address=file_line[4], name=file_line[5])
+    }
     return normalized_data

@@ -23,7 +23,8 @@ class PurchaseImporterFormViewTestCase(TestCase):
 
 class ImportDataViewTestCase(TestCase):
 
-    def test_import_data_should_return_message(self):
+    @mock.patch.object(views, 'normalize_data')
+    def test_import_data_should_return_message(self, normalize_data):
         fake_purchase_file = StringIO('header test\ntest')
         request_mock = mock.Mock()
         request_mock.FILES = {'purchase_file': fake_purchase_file}
@@ -75,8 +76,8 @@ class SavePurchaseDataViewTestCase(TestCase):
 
 class NormalizaDataViewTestCase(TestCase):
 
-    def test_normalize_data_must_convert_a_file_line_in_purchase_models(self):
-        fake_parsed_line = ('Joao Silva', 'R$10 off', 'R$ 20 of food', '10.0', '2', '987 Fake St', 'Bobs Pizza')
+    def test_normalize_data_must_return_instances_of_purchase_models(self):
+        fake_parsed_line = ('Joao Silva', 'R$10 off R$ 20 of food', '10.0', '2', '987 Fake St', 'Bobs Pizza')
         normalized_data = views.normalize_data(fake_parsed_line)
         self.assertIn('purchaser', normalized_data)
         self.assertIn('item', normalized_data)
@@ -84,3 +85,27 @@ class NormalizaDataViewTestCase(TestCase):
         self.assertIsInstance(normalized_data['purchaser'], models.Purchaser)
         self.assertIsInstance(normalized_data['item'], models.Item)
         self.assertIsInstance(normalized_data['merchant'], models.Merchant)
+
+    def test_normalize_data_must_convert_the_data_lines_in_data_models(self):
+        fake_parsed_line = ('Joao Silva', 'R$10 off R$ 20 of food', '10.0', '2', '987 Fake St', 'Bobs Pizza')
+        normalized_data = views.normalize_data(fake_parsed_line)
+
+        purchaser = normalized_data['purchaser']
+        item = normalized_data['item']
+        merchant = normalized_data['merchant']
+
+        self.assertEquals(purchaser.name, 'Joao Silva')
+        self.assertEquals(purchaser.count, 2)
+
+        self.assertEquals(item.description, 'R$10 off R$ 20 of food')
+        self.assertEquals(item.price, 10.0)
+
+        self.assertEquals(merchant.address, '987 Fake St')
+        self.assertEquals(merchant.name, 'Bobs Pizza')
+
+
+    def test_normalize_data_should_cast_to_int_the_purchaser_count(self):
+        pass
+
+    def test_normalize_data_should_cast_to_float_the_item_price(self):
+        pass
