@@ -8,7 +8,7 @@
 
     <div id="message">{{message}}</div>
 
-    <form class="form-horizontal" method="post" action="/purchase/pdi/">
+    <form class="form-horizontal" method="post" action="/purchase/pdi/" enctype="multipart/form-data">
         {% csrf_token %}
         <fieldset>
 
