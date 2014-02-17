@@ -24,8 +24,9 @@ class PurchaseImporterFormViewTestCase(TestCase):
 class ImportDataViewTestCase(TestCase):
 
     def test_import_data_should_return_message(self):
+        fake_purchase_file = StringIO('header test\ntest')
         request_mock = mock.Mock()
-        request_mock.FILES = {'purchase_file': mock.Mock()}
+        request_mock.FILES = {'purchase_file': fake_purchase_file}
         message_received = views.import_data(request_mock)
         self.assertIsInstance(message_received, str)
         self.assertGreater(len(message_received), 0)
@@ -34,8 +35,19 @@ class ImportDataViewTestCase(TestCase):
     def test_import_data_should_call_parse_purchase_file_data(self, parse_purchase_file_data_mock):
         request_mock = mock.Mock()
         request_mock.FILES = {'purchase_file': mock.Mock()}
-        message_received = views.import_data(request_mock)
+        views.import_data(request_mock)
         self.assertTrue(parse_purchase_file_data_mock.called)
+
+    @mock.patch.object(views, 'parse_purchase_file_data')
+    @mock.patch.object(views, 'save_purchase_data')
+    def test_import_data_should_call_save_purchase_data(self, save_purchase_data_mock,
+            parse_purchase_file_data_mock):
+        request_mock = mock.Mock()
+        request_mock.FILES = {'purchase_file': mock.Mock()}
+        parse_purchase_file_data_mock.return_value = iter([1, 2, 3])
+        views.import_data(request_mock)
+        excepted_calls = [mock.call(1), mock.call(2), mock.call(3)]
+        save_purchase_data_mock.assert_has_calls(excepted_calls, any_order=True)
 
 
 class ParsePurchaseFileDataViewTestCase(TestCase):
