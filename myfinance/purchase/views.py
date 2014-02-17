@@ -27,7 +27,10 @@ def parse_purchase_file_data(purchase_file):
         yield tuple(line.split('    '))
 
 def save_purchase_data(file_line):
-    normalize_data(file_line)
+    normalized_data = normalize_data(file_line)
+    normalized_data['purchaser'].save()
+    normalized_data['item'].save()
+    normalized_data['merchant'].save()
 
 def normalize_data(file_line):
     normalized_data = {
