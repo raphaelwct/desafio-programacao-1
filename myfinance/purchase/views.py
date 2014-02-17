@@ -26,4 +26,7 @@ def parse_purchase_file_data(purchase_file):
         yield tuple(line.split('    '))
 
 def save_purchase_data(file_line):
+    normalize_data(file_line)
+
+def normalize_data(file_line):
     pass

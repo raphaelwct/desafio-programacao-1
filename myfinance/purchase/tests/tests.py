@@ -63,3 +63,11 @@ class ParsePurchaseFileDataViewTestCase(TestCase):
         for parsed_line in views.parse_purchase_file_data(fake_purchase_file):
             self.assertEquals(parsed_line, expected_parsed_line)
         self.assertTrue(parse_purchase_file_data_mock.called)
+
+
+class SavePurchaseDataViewTestCase(TestCase):
+
+    @mock.patch.object(views, 'normalize_data')
+    def test_save_purchase_data_must_call_normalize_data_method(self, normalize_data_mock):
+        views.save_purchase_data(mock.Mock())
+        self.assertTrue(normalize_data_mock.called)
