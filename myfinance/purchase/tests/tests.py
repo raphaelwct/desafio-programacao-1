@@ -27,3 +27,9 @@ class ImportDataViewTestCase(TestCase):
         message_received = views.import_data(request_mock)
         self.assertIsInstance(message_received, str)
         self.assertGreater(len(message_received), 0)
+
+    def test_import_data_should_parse_all_the_file_data(self):
+        request_mock = mock.Mock()
+        message_received = views.import_data(request_mock)
+        self.assertIsInstance(message_received, str)
+        self.assertGreater(len(message_received), 0)
