@@ -75,18 +75,35 @@ class SavePurchaseDataViewTestCase(TestCase):
 
     @mock.patch.object(views, 'normalize_data')
     def test_save_purchase_data_must_save_all_the_normalized_models(self, normalize_data_mock):
-        purchase_mock = mock.Mock()
+        purchaser_mock = mock.Mock()
         item_mock = mock.Mock()
         merchant_mock = mock.Mock()
         normalize_data_mock.return_value = {
-            'purchaser': purchase_mock,
+            'purchaser': purchaser_mock,
             'item': item_mock,
             'merchant': merchant_mock
         }
         views.save_purchase_data(mock.Mock())
-        self.assertTrue(purchase_mock.save.called)
+        self.assertTrue(purchaser_mock.save.called)
         self.assertTrue(item_mock.save.called)
         self.assertTrue(merchant_mock.save.called)
+
+    @mock.patch.object(models, 'Purchase')
+    @mock.patch.object(views, 'normalize_data')
+    def test_save_purchase_data_should_save_all_the_normalized_data_in_a_model_that_represents_a_purchase(self,
+            normalize_data_mock, purchase_model_mock):
+        purchaser_mock = mock.Mock()
+        item_mock = mock.Mock()
+        merchant_mock = mock.Mock()
+        normalize_data_mock.return_value = {
+            'purchaser': purchaser_mock,
+            'item': item_mock,
+            'merchant': merchant_mock
+        }
+        import ipdb;ipdb.set_trace();
+        views.save_purchase_data(mock.Mock())
+        purchase_model_mock.assert_called_with(purchaser=purchaser_mock, item=item_mock,
+                merchant=merchant_mock)
 
 
 class NormalizaDataViewTestCase(TestCase):

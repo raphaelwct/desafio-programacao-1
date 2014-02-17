@@ -1,5 +1,12 @@
 from django.db import models
 
+
+class Purchase(models.Model):
+    purchaser = models.ForeignKey('Purchaser')
+    item = models.ForeignKey('Item')
+    merchant = models.ForeignKey('Merchant')
+
+
 class Purchaser(models.Model):
     name = models.CharField(max_length=100, unique=True)
     count = models.IntegerField()
