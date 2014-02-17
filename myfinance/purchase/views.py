@@ -15,4 +15,15 @@ def purchase_importer_form(request):
 
 
 def import_data(request):
+    purchase_file = request.FILES['purchase_file']
+    parse_purchase_file_data(purchase_file)
     return 'Importacao efetuada com sucesso'
+
+def parse_purchase_file_data(purchase_file):
+    import ipdb;ipdb.set_trace();
+    file_header = purchase_file.readline()
+    for line in purchase_file.readline():
+        yield tuple(line.split('    '))
+
+def save_purchase_data(file_line):
+    pass
