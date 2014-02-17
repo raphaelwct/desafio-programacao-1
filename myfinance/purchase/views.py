@@ -29,4 +29,5 @@ def save_purchase_data(file_line):
     normalize_data(file_line)
 
 def normalize_data(file_line):
-    pass
+    normalized_data = {'purchaser': None, 'item': None, 'merchant': None}
+    return normalized_data

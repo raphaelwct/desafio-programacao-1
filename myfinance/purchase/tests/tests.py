@@ -71,3 +71,13 @@ class SavePurchaseDataViewTestCase(TestCase):
     def test_save_purchase_data_must_call_normalize_data_method(self, normalize_data_mock):
         views.save_purchase_data(mock.Mock())
         self.assertTrue(normalize_data_mock.called)
+
+
+class NormalizaDataViewTestCase(TestCase):
+
+    def test_normalize_data_must_convert_a_file_line_in_purchase_models(self):
+        fake_parsed_line = ('Joao Silva', 'R$10 off', 'R$ 20 of food', '10.0', '2', '987 Fake St', 'Bobs Pizza')
+        normalized_data = views.normalize_data(fake_parsed_line)
+        self.assertIn('purchaser', normalized_data)
+        self.assertIn('item', normalized_data)
+        self.assertIn('merchant', normalized_data)
