@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render
+from purchase import models
 
 
 def purchase_importer_form(request):
@@ -30,4 +31,7 @@ def save_purchase_data(file_line):
 
 def normalize_data(file_line):
     normalized_data = {'purchaser': None, 'item': None, 'merchant': None}
+    normalized_data['purchaser'] = models.Purchaser()
+    normalized_data['item'] = models.Item()
+    normalized_data['merchant'] = models.Merchant()
     return normalized_data

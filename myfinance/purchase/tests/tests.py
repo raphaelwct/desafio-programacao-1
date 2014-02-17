@@ -1,5 +1,5 @@
 from django.test import TestCase, Client
-from purchase import views
+from purchase import views, models
 import mock
 from StringIO import StringIO
 
@@ -81,3 +81,6 @@ class NormalizaDataViewTestCase(TestCase):
         self.assertIn('purchaser', normalized_data)
         self.assertIn('item', normalized_data)
         self.assertIn('merchant', normalized_data)
+        self.assertIsInstance(normalized_data['purchaser'], models.Purchaser)
+        self.assertIsInstance(normalized_data['item'], models.Item)
+        self.assertIsInstance(normalized_data['merchant'], models.Merchant)
