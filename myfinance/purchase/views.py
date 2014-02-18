@@ -16,10 +16,19 @@ def purchase_importer_form(request):
 
 
 def import_data(request):
+    purchase_total = 0
+
     purchase_file = request.FILES['purchase_file']
     for parsed_line in parse_purchase_file_data(purchase_file):
         save_purchase_data(parsed_line)
-    return 'Importacao efetuada com sucesso'
+        item_price = float(parsed_line[2])
+        purchase_count = int(parsed_line[3])
+        purchase_total += item_price * purchase_count
+
+    return {
+        'import_feedback': "Importacao efetuada com sucesso",
+        'purchase_total': "A receita bruta total foi de R$ %s" % purchase_total
+    }
 
 
 def parse_purchase_file_data(purchase_file):

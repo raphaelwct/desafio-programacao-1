@@ -23,15 +23,21 @@ class PurchaseImporterFormViewTestCase(TestCase):
 
 class ImportDataViewTestCase(TestCase):
 
+    @mock.patch.object(views, 'parse_purchase_file_data')
     @mock.patch.object(models, 'Purchase')
     @mock.patch.object(views, 'normalize_data')
-    def test_import_data_should_return_message(self, normalize_data, purchase_model_mock):
-        fake_purchase_file = StringIO('header test\ntest')
+    def test_import_data_should_return_a_save_feedback_message_and_the_purchase_total(self,
+            normalize_data, purchase_model_mock, parse_purchase_file_data_mock):
+        fake_parsed_line = iter([('Joao Silva', 'R$10 off R$ 20 of food', '10.0', '2', '987 Fake St',
+                'Bobs Pizza')])
         request_mock = mock.Mock()
-        request_mock.FILES = {'purchase_file': fake_purchase_file}
-        message_received = views.import_data(request_mock)
-        self.assertIsInstance(message_received, str)
-        self.assertGreater(len(message_received), 0)
+        request_mock.FILES = {'purchase_file': mock.Mock()}
+        parse_purchase_file_data_mock.return_value = fake_parsed_line
+        messages = views.import_data(request_mock)
+        self.assertIn('import_feedback', messages)
+        self.assertIn('purchase_total', messages)
+        self.assertGreater(len(messages['import_feedback']), 0)
+        self.assertGreater(len(messages['purchase_total']), 0)
 
     @mock.patch.object(views, 'parse_purchase_file_data')
     def test_import_data_should_call_parse_purchase_file_data(self, parse_purchase_file_data_mock):
@@ -46,9 +52,12 @@ class ImportDataViewTestCase(TestCase):
             parse_purchase_file_data_mock):
         request_mock = mock.Mock()
         request_mock.FILES = {'purchase_file': mock.Mock()}
-        parse_purchase_file_data_mock.return_value = iter([1, 2, 3])
+        file_line1 = ('Joao Silva', 'R$10 off R$ 20 of food', '10.0', '2', '987 Fake St', 'Bobs Pizza')
+        file_line2 = ('Homer', 'R$50 off R$ 20 of beer', '5.0', '4', '111 Fake St', 'Beer Taste')
+        fake_parsed_line = iter([file_line1, file_line2])
+        parse_purchase_file_data_mock.return_value = fake_parsed_line
         views.import_data(request_mock)
-        excepted_calls = [mock.call(1), mock.call(2), mock.call(3)]
+        excepted_calls = [mock.call(file_line1), mock.call(file_line2)]
         save_purchase_data_mock.assert_has_calls(excepted_calls, any_order=True)
 
 
