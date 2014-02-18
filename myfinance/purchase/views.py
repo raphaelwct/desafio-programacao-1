@@ -22,9 +22,10 @@ def import_data(request):
     return 'Importacao efetuada com sucesso'
 
 def parse_purchase_file_data(purchase_file):
-    file_header = purchase_file.readline()
-    for line in purchase_file.readline():
-        yield tuple(line.split('    '))
+    purchase_file = iter(purchase_file)
+    purchase_file.next()
+    for line in purchase_file:
+        yield (tuple(line.split('\t')))
 
 def save_purchase_data(file_line):
     normalized_data = normalize_data(file_line)
