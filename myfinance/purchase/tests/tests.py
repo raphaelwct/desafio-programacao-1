@@ -89,9 +89,9 @@ class SavePurchaseDataViewTestCase(TestCase):
             'merchant': merchant_mock
         }
         views.save_purchase_data(mock.Mock())
-        self.assertTrue(purchaser_mock.save.called)
-        self.assertTrue(item_mock.save.called)
-        self.assertTrue(merchant_mock.save.called)
+        self.assertTrue(purchaser_mock.get_or_create.called)
+        self.assertTrue(item_mock.get_or_create.called)
+        self.assertTrue(merchant_mock.get_or_create.called)
 
     @mock.patch.object(models, 'Purchase')
     @mock.patch.object(views, 'normalize_data')

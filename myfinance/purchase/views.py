@@ -29,9 +29,9 @@ def parse_purchase_file_data(purchase_file):
 
 def save_purchase_data(file_line):
     normalized_data = normalize_data(file_line)
-    normalized_data['purchaser'].save()
-    normalized_data['item'].save()
-    normalized_data['merchant'].save()
+    normalized_data['purchaser'].get_or_create()
+    normalized_data['item'].get_or_create()
+    normalized_data['merchant'].get_or_create()
     purchase = models.Purchase(
         purchaser=normalized_data['purchaser'],
         item=normalized_data['item'],
