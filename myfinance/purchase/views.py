@@ -31,6 +31,12 @@ def save_purchase_data(file_line):
     normalized_data['purchaser'].save()
     normalized_data['item'].save()
     normalized_data['merchant'].save()
+    purchase = models.Purchase(
+        purchaser=normalized_data['purchaser'],
+        item=normalized_data['item'],
+        merchant=normalized_data['merchant']
+    )
+    purchase.save()
 
 def normalize_data(file_line):
     normalized_data = {

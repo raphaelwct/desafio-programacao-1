@@ -23,8 +23,9 @@ class PurchaseImporterFormViewTestCase(TestCase):
 
 class ImportDataViewTestCase(TestCase):
 
+    @mock.patch.object(models, 'Purchase')
     @mock.patch.object(views, 'normalize_data')
-    def test_import_data_should_return_message(self, normalize_data):
+    def test_import_data_should_return_message(self, normalize_data, purchase_model_mock):
         fake_purchase_file = StringIO('header test\ntest')
         request_mock = mock.Mock()
         request_mock.FILES = {'purchase_file': fake_purchase_file}
@@ -68,13 +69,17 @@ class ParsePurchaseFileDataViewTestCase(TestCase):
 
 class SavePurchaseDataViewTestCase(TestCase):
 
+    @mock.patch.object(models, 'Purchase')
     @mock.patch.object(views, 'normalize_data')
-    def test_save_purchase_data_must_call_normalize_data_method(self, normalize_data_mock):
+    def test_save_purchase_data_must_call_normalize_data_method(self, normalize_data_mock,
+            purchase_model_mock):
         views.save_purchase_data(mock.Mock())
         self.assertTrue(normalize_data_mock.called)
 
+    @mock.patch.object(models, 'Purchase')
     @mock.patch.object(views, 'normalize_data')
-    def test_save_purchase_data_must_save_all_the_normalized_models(self, normalize_data_mock):
+    def test_save_purchase_data_must_save_all_the_normalized_models(self, normalize_data_mock,
+            purchase_model_mock):
         purchaser_mock = mock.Mock()
         item_mock = mock.Mock()
         merchant_mock = mock.Mock()
@@ -100,7 +105,6 @@ class SavePurchaseDataViewTestCase(TestCase):
             'item': item_mock,
             'merchant': merchant_mock
         }
-        import ipdb;ipdb.set_trace();
         views.save_purchase_data(mock.Mock())
         purchase_model_mock.assert_called_with(purchaser=purchaser_mock, item=item_mock,
                 merchant=merchant_mock)
