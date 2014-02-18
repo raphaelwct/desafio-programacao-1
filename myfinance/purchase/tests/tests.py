@@ -78,23 +78,6 @@ class SavePurchaseDataViewTestCase(TestCase):
 
     @mock.patch.object(models, 'Purchase')
     @mock.patch.object(views, 'normalize_data')
-    def test_save_purchase_data_must_save_all_the_normalized_models(self, normalize_data_mock,
-            purchase_model_mock):
-        purchaser_mock = mock.Mock()
-        item_mock = mock.Mock()
-        merchant_mock = mock.Mock()
-        normalize_data_mock.return_value = {
-            'purchaser': purchaser_mock,
-            'item': item_mock,
-            'merchant': merchant_mock
-        }
-        views.save_purchase_data(mock.Mock())
-        self.assertTrue(purchaser_mock.get_or_create.called)
-        self.assertTrue(item_mock.get_or_create.called)
-        self.assertTrue(merchant_mock.get_or_create.called)
-
-    @mock.patch.object(models, 'Purchase')
-    @mock.patch.object(views, 'normalize_data')
     def test_save_purchase_data_should_save_all_the_normalized_data_in_a_model_that_represents_a_purchase(self,
             normalize_data_mock, purchase_model_mock):
         purchaser_mock = mock.Mock()
@@ -138,6 +121,18 @@ class NormalizaDataViewTestCase(TestCase):
 
         self.assertEquals(merchant.address, '987 Fake St')
         self.assertEquals(merchant.name, 'Bobs Pizza')
+
+    @mock.patch.object(models.Merchant, 'objects')
+    @mock.patch.object(models.Item, 'objects')
+    @mock.patch.object(models.Purchaser, 'objects')
+    @mock.patch('purchase.models.Purchase')
+    def test_normalize_data_must_save_some_of_the_normalized_models(self, purchase_model_mock,
+            purchaser_manager_mock, item_manager_mock, merchant_manager_mock):
+        fake_parsed_line = ('Joao Silva', 'R$10 off R$ 20 of food', '10.0', '2', '987 Fake St', 'Bobs Pizza')
+        views.normalize_data(fake_parsed_line)
+        self.assertTrue(purchaser_manager_mock.get_or_create.called)
+        self.assertTrue(item_manager_mock.get_or_create.called)
+        self.assertTrue(merchant_manager_mock.get_or_create.called)
 
 
     def test_normalize_data_should_cast_to_int_the_purchaser_count(self):

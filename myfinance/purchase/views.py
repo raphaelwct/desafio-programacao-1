@@ -21,17 +21,19 @@ def import_data(request):
         save_purchase_data(parsed_line)
     return 'Importacao efetuada com sucesso'
 
+
 def parse_purchase_file_data(purchase_file):
     purchase_file = iter(purchase_file)
     purchase_file.next()
     for line in purchase_file:
         yield (tuple(line.split('\t')))
 
+
 def save_purchase_data(file_line):
     normalized_data = normalize_data(file_line)
-    normalized_data['purchaser'].get_or_create()
-    normalized_data['item'].get_or_create()
-    normalized_data['merchant'].get_or_create()
+    # normalized_data['purchaser'].objects.get_or_create()
+    # normalized_data['item'].objects.get_or_create()
+    # normalized_data['merchant'].objects.get_or_create()
     purchase = models.Purchase(
         purchaser=normalized_data['purchaser'],
         item=normalized_data['item'],
@@ -39,10 +41,17 @@ def save_purchase_data(file_line):
     )
     purchase.save()
 
+
 def normalize_data(file_line):
-    normalized_data = {
-        'purchaser': models.Purchaser(name=file_line[0], count=int(file_line[3])),
-        'item': models.Item(description=file_line[1], price=float(file_line[2])),
-        'merchant': models.Merchant(address=file_line[4], name=file_line[5])
+    purchaser = models.Purchaser.objects.get_or_create(
+        name=file_line[0], count=int(file_line[3]))[0]
+    item = models.Item.objects.get_or_create(
+        description=file_line[1], price=float(file_line[2]))[0]
+    merchant = models.Merchant.objects.get_or_create(
+        address=file_line[4], name=file_line[5])[0]
+
+    return {
+        'purchaser': purchaser,
+        'item': item,
+        'merchant': merchant
     }
-    return normalized_data
