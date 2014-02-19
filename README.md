@@ -5,4 +5,4 @@ To access the project documentation, clone it and follow the instruction bellow:
 
 xdg-open project_path/myfinance/docs/build/html/index.html
 
-...and you'll see the PDI documentation on your browser.
+... and you'll see the PDI documentation in your browser.
