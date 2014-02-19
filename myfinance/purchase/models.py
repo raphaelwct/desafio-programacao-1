@@ -11,6 +11,7 @@ class Purchase(models.Model):
 class Purchaser(models.Model):
     name = models.CharField(max_length=100, unique=True)
 
+
 class Item(models.Model):
     description = models.CharField(max_length=255, unique=True)
     price = models.DecimalField(max_digits=18, decimal_places=2)
