@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from purchase import models
 
+
 def import_data(request):
     purchase_total = 0
 
