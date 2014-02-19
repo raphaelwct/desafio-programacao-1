@@ -12,7 +12,7 @@ VirtualEnv
 
 You should create a new virtual environment and install the requirements::
 
-    virtualenv pdi
+    virtualenv virtualenv_path/pdi
     source virtualenv_path/bin/activate
     cd myfinance
     pip install -r requirements.pip
@@ -30,3 +30,8 @@ Runserver
 To turn it on you have to start the webserver::
 
     python manage.py runserver
+
+
+Access
+======
+You can have access to the Purchase Data Importer through this url: http://127.0.0.1:8000/purchase/pdi/
