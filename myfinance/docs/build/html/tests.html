@@ -49,11 +49,15 @@
 <h1>Tests<a class="headerlink" href="#tests" title="Permalink to this headline">¶</a></h1>
 <p>This project was developed using TDD and BDD methodologies, below are some instructions to run the
 project&#8217;s tests.</p>
+<p>First of all, start the web server:</p>
+<div class="highlight-python"><div class="highlight"><pre>python manage.py runserver
+</pre></div>
+</div>
 <p>To run the functional tests, do the following:</p>
 <div class="highlight-python"><div class="highlight"><pre>behave purchase/tests/features
 </pre></div>
 </div>
-<p>To run the unit tests, you have some options:</p>
+<p>To run the unit tests:</p>
 <div class="highlight-python"><div class="highlight"><pre>python manage.py test purchase
 </pre></div>
 </div>
