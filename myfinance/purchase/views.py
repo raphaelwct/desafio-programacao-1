@@ -11,7 +11,7 @@ def purchase_importer_form(request):
     return render(
         request,
         'purchase_importer_form.html',
-        {'message': import_message}
+        import_message
     )
 
 
@@ -26,8 +26,8 @@ def import_data(request):
         purchase_total += item_price * purchase_count
 
     return {
-        'import_feedback': "Importacao efetuada com sucesso",
-        'purchase_total': "A receita bruta total foi de R$ %s" % purchase_total
+        'import_feedback': "Importacao efetuada com sucesso.",
+        'purchase_total': "A receita bruta total foi de R$ %s." % purchase_total
     }
 
 

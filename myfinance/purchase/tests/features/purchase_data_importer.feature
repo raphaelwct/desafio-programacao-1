@@ -12,6 +12,6 @@ Funcionalidade: Importar dados de vendas
 
         Dado que eu faco o upload de um arquivo
         Quando eu pressiono o botao importar
-        Então eu devo ver "Importacao efetuada com sucesso"
+        Então eu devo ver "Importacao efetuada com sucesso."
         E todos os dados do arquivo devem estar armazenados em banco de dados
         E eu devo ver a receita bruta total representada pelo arquivo enviado
