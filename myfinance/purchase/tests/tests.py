@@ -2,6 +2,7 @@ from django.test import TestCase, Client
 from purchase import views, models
 import mock
 from StringIO import StringIO
+from django import shortcuts as django_shortcuts
 
 
 class PurchaseImporterFormViewTestCase(TestCase):
@@ -14,6 +15,21 @@ class PurchaseImporterFormViewTestCase(TestCase):
     def test_if_purchase_importer_form_calls_import_data_in_case_of_post_request(self, import_data_mock):
         self.client.post('/purchase/pdi/')
         self.assertTrue(import_data_mock.called)
+
+    @mock.patch.object(django_shortcuts, 'render')
+    @mock.patch.object(views, 'import_data')
+    def test_purchase_importer_form_must_render_the_template_with_import_feedback_and_the_purchase_total_messages_in_case_of_post_request(self,
+            import_data_mock, render_mock):
+        fake_import_data_messages = {'import_feedback': 'Foo', 'purchase_total': 'Bar'}
+        import_data_mock.return_value = fake_import_data_messages
+        self.client.post('/purchase/pdi/')
+        import ipdb;ipdb.set_trace();
+        self.assertTrue(import_data_mock.called)
+        render_mock.assert_called_with(
+            'purchase_importer_form.html',
+            fake_import_data_messages,
+            request=self.client.request,
+        )
 
     @mock.patch.object(views, 'import_data')
     def test_purchase_importer_form_should_not_calls_import_data_in_case_of_get_request(self, import_data_mock):

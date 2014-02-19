@@ -26,3 +26,13 @@ def i_press_the_import_button(context):
 def i_must_see_the_message(context, message):
     message_field = context.browser.find_element_by_id('message')
     tools.assert_equals(message, message_field.text)
+
+@then(u'todos os dados do arquivo devem estar armazenados em banco de dados')
+def all_the_file_data_must_be_saved_on_database(context):
+    pass
+
+@then(u'eu devo ver a receita bruta total representada pelo arquivo enviado')
+def i_must_see_the_purchase_total_from_that_file(context):
+    purchase_total_field = context.browser.find_element_by_id('purchase_total')
+    expected_purchase_total_message = "A receita bruta total foi de R$ 95.0"
+    tools.assert_equals(expected_purchase_total_message, purchase_total_field.text)
