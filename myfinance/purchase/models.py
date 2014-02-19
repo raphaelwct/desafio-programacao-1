@@ -5,12 +5,11 @@ class Purchase(models.Model):
     purchaser = models.ForeignKey('Purchaser')
     item = models.ForeignKey('Item')
     merchant = models.ForeignKey('Merchant')
+    count = models.IntegerField()
 
 
 class Purchaser(models.Model):
     name = models.CharField(max_length=100, unique=True)
-    count = models.IntegerField()
-
 
 class Item(models.Model):
     description = models.CharField(max_length=255, unique=True)

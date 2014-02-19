@@ -108,14 +108,16 @@ class SavePurchaseDataViewTestCase(TestCase):
         purchaser_mock = mock.Mock()
         item_mock = mock.Mock()
         merchant_mock = mock.Mock()
+        purchase_count = 10
         normalize_data_mock.return_value = {
             'purchaser': purchaser_mock,
             'item': item_mock,
-            'merchant': merchant_mock
+            'merchant': merchant_mock,
+            'purchase_count': purchase_count
         }
         views.save_purchase_data(mock.Mock())
         purchase_model_mock.assert_called_with(purchaser=purchaser_mock, item=item_mock,
-                merchant=merchant_mock)
+                merchant=merchant_mock, count=purchase_count)
 
 
 class NormalizaDataViewTestCase(TestCase):
@@ -139,13 +141,14 @@ class NormalizaDataViewTestCase(TestCase):
         merchant = normalized_data['merchant']
 
         self.assertEquals(purchaser.name, 'Joao Silva')
-        self.assertEquals(purchaser.count, 2)
 
         self.assertEquals(item.description, 'R$10 off R$ 20 of food')
         self.assertEquals(item.price, 10.0)
 
         self.assertEquals(merchant.address, '987 Fake St')
         self.assertEquals(merchant.name, 'Bobs Pizza')
+
+        self.assertEquals(normalized_data['purchase_count'], 2)
 
     @mock.patch.object(models.Merchant, 'objects')
     @mock.patch.object(models.Item, 'objects')

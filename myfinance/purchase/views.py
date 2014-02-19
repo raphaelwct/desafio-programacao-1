@@ -46,14 +46,14 @@ def save_purchase_data(file_line):
     purchase = models.Purchase(
         purchaser=normalized_data['purchaser'],
         item=normalized_data['item'],
-        merchant=normalized_data['merchant']
+        merchant=normalized_data['merchant'],
+        count=normalized_data['purchase_count']
     )
     purchase.save()
 
 
 def normalize_data(file_line):
-    purchaser = models.Purchaser.objects.get_or_create(
-        name=file_line[0], count=int(file_line[3]))[0]
+    purchaser = models.Purchaser.objects.get_or_create(name=file_line[0])[0]
     item = models.Item.objects.get_or_create(
         description=file_line[1], price=float(file_line[2]))[0]
     merchant = models.Merchant.objects.get_or_create(
@@ -62,5 +62,6 @@ def normalize_data(file_line):
     return {
         'purchaser': purchaser,
         'item': item,
-        'merchant': merchant
+        'merchant': merchant,
+        'purchase_count': int(file_line[3])
     }
