@@ -2,6 +2,8 @@
 
 from behave import given, when, then
 from nose import tools
+from myfinance import settings
+import os
 
 
 @given(u'que eu acesso o formulario de importacao')
@@ -13,8 +15,7 @@ def that_i_access_the_importer_form(context):
 def that_i_upload_a_purchase_file(context):
     purchase_file_field = context.browser.find_element_by_name('purchase_file')
     tools.assert_true(purchase_file_field)
-    #purchase_file_path = os.path.join(settings.BASE_DIR, 'example_input.tab')
-    purchase_file_path = '/home/rcarvalho/Workspace/desafio-programacao-1/example_input.tab'
+    purchase_file_path = os.path.join(settings.BASE_DIR, '..', 'example_input.tab')
     purchase_file_field.send_keys(purchase_file_path)
 
 
