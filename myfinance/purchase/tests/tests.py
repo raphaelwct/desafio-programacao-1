@@ -4,7 +4,7 @@ import mock
 from StringIO import StringIO
 
 
-class PurchaseImporterFormViewTestCase(TestCase):
+class ViewPurchaseImporterFormTestCase(TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -37,7 +37,7 @@ class PurchaseImporterFormViewTestCase(TestCase):
         self.assertFalse(import_data_mock.called)
 
 
-class ImportDataViewTestCase(TestCase):
+class UtilsImportDataTestCase(TestCase):
 
     @mock.patch.object(utils, 'calc_purchase_total')
     @mock.patch.object(utils, 'save_purchase_data')
@@ -99,7 +99,7 @@ class ImportDataViewTestCase(TestCase):
         calc_purchase_total_mock.assert_called_with(parsed_data)
 
 
-class ParsePurchaseFileDataViewTestCase(TestCase):
+class UtilsParsePurchaseFileDataTestCase(TestCase):
 
     @mock.patch.object(utils, 'parse_purchase_file_data')
     def test_parse_purchase_file_data_should_transform_each_line_in_a_tuple(self,
@@ -114,7 +114,7 @@ class ParsePurchaseFileDataViewTestCase(TestCase):
         self.assertTrue(parse_purchase_file_data_mock.called)
 
 
-class SavePurchaseDataViewTestCase(TestCase):
+class UtilsPurchaseDataTestCase(TestCase):
 
     @mock.patch.object(models.Merchant.objects, 'get_or_create')
     @mock.patch.object(models.Item.objects, 'get_or_create')
