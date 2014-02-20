@@ -3,6 +3,7 @@
 from behave import given, when, then
 from nose import tools
 from myfinance import settings
+from purchase import models
 import os
 
 
@@ -33,7 +34,10 @@ def i_must_see_the_message(context, import_feedback):
 
 @then(u'todos os dados do arquivo devem estar armazenados em banco de dados')
 def all_the_file_data_must_be_saved_on_database(context):
-    pass
+    tools.assert_equals(models.Purchase.objects.count(), 4)
+    tools.assert_equals(models.Purchaser.objects.count(), 4)
+    tools.assert_equals(models.Item.objects.count(), 3)
+    tools.assert_equals(models.Merchant.objects.count(), 3)
 
 
 @then(u'eu devo ver a receita bruta total representada pelo arquivo enviado')
